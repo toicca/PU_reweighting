@@ -1,6 +1,9 @@
 # PU_reweighting
 Scripts for creating PU reweighting for CMS MC.
 
+# Setup
+* TODO
+
 # Running
 * Connect to lxplus, preferably lxplus8
 * `python3 run.py`
