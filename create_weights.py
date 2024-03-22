@@ -22,7 +22,7 @@ if not os.path.exists('rootfiles/weights'):
 if not os.path.exists('plots'):
     os.makedirs('plots')
 
-# Load the data RDF from /media/storage/nicotoik/dijet/input_files/mcFiles_Summer23_new.txt
+# Load the MC file paths and setup RDF
 input_files = []
 with open(mc_file_path) as f:
     input_files = f.readlines()
@@ -35,9 +35,11 @@ for file in input_files:
     chain.Add(file.strip())
 
 rdf = ROOT.RDataFrame(chain)
-# Requires ROOT version >= 6.30
-# bar = ROOT.RDF.Experimental.AddProgressBar(rdf)
 
+# Requires ROOT version >= 6.30
+# ROOT.RDF.Experimental.AddProgressBar(rdf)
+
+# Loop through triggers
 for trigger in trigger_list:
     trig_rdf = rdf.Filter(trigger)
     histo = trig_rdf.Histo1D(("Pileup_nTrueInt", "pileup_mc", 120, 0, 120), "Pileup_nTrueInt", "genWeight")
@@ -50,16 +52,20 @@ for trigger in trigger_list:
     dt_histo.SetName("pileup_dt")
     dt_histo.SetTitle("pileup_dt")
     
-    # Set dt_histo error to 0
+    # Check that the histograms are not empty
+    if histo.GetMaximum() == 0 or dt_histo.GetMaximum() == 0:
+        print(f"Skipping {trigger} due to empty histograms")
+        continue
+    
+    # Set dt_histo error to 0 and normalize the histograms
     for i in range(1, dt_histo.GetNbinsX() + 1):
         dt_histo.SetBinError(i, 0)
     
-    # Scale the histograms to maximum 1
     histo.Scale(1 / histo.GetMaximum())
     dt_histo.Scale(1 / dt_histo.GetMaximum())
     
     # Compare the two histograms
-    c = ROOT.TCanvas("asd", "asd", 800, 600)
+    c = ROOT.TCanvas("canv", "canv", 800, 600)
     histo.Draw("hist")
     dt_histo.Draw("hist SAME plc pmc")
     c.BuildLegend()
@@ -74,6 +80,7 @@ for trigger in trigger_list:
     weights.SetDirectory(0)
     dt_file.Close()
 
+    # Save the weights
     weight_file = ROOT.TFile.Open("rootfiles/weights/" + trigger + "_weights.root", "RECREATE")
     weights.Write()
     dt_histo.SetName("dt_pileup")
