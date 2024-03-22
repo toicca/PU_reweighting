@@ -3,13 +3,13 @@ import sys
 
 mbiasxsec = 69200  # mb
 CMSSW_VERSION = 'CMSSW_13_2_10'
+
+# The path /eos/user/c/cmsdqm/www/CAF/certification/ also contains other similar JSONs for different eras
 jsonfile = '/eos/user/c/cmsdqm/www/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json'
 # Alternative 2022 JSON: /eos/user/c/cmsdqm/www/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json
-# /eos/user/c/cmsdqm/www/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json
+
 pileupJSON = '/eos/user/c/cmsdqm/www/CAF/certification/Collisions23/PileUp/BCD/pileup_JSON.txt'
 # Alternative 2022 pileup JSON: /eos/user/c/cmsdqm/www/CAF/certification/Collisions22/PileUp/BCDEFG/pileup_JSON.txt
-# /eos/user/c/cmsdqm/www/CAF/certification/Collisions23/PileUp/BCD/pileup_JSON.txt
-# Alternative paths also contain era specific JSONs
 
 trigger_list = []
 with open('trigger_list.txt') as f:

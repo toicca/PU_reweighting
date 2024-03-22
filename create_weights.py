@@ -51,6 +51,9 @@ for trigger in trigger_list:
     dt_histo.SetDirectory(0)
     dt_histo.SetName("pileup_dt")
     dt_histo.SetTitle("pileup_dt")
+    dt_histo.SetLineColor(ROOT.kRed)
+    dt_histo.SetMarkerColor(ROOT.kRed)
+
     
     # Check that the histograms are not empty
     if histo.GetMaximum() == 0 or dt_histo.GetMaximum() == 0:
@@ -67,7 +70,7 @@ for trigger in trigger_list:
     # Compare the two histograms
     c = ROOT.TCanvas("canv", "canv", 800, 600)
     histo.Draw("hist")
-    dt_histo.Draw("hist SAME plc pmc")
+    dt_histo.Draw("SAME")
     c.BuildLegend()
     c.SaveAs("plots/" + trigger + "_pileup_comparison.png")
     
