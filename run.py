@@ -39,7 +39,7 @@ brilcalc lumi --byls --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/nor
     os.system(command)
     
     # Reset the environment from brilws to CMSSW
-    # Notice --runperiod Run2 is used for 2016-2023
+    # Notice --runperiod Run2 is used for Run2+Run3
     # A ~bug in CMSSW, see source code
     # https://github.com/cms-sw/cmssw/blob/a33c53afbb1049c261c178be6b6d05e32a30f6d2/RecoLuminosity/LumiDB/python/csvLumibyLSParser.py#L51
     command = f'''

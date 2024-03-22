@@ -3,7 +3,7 @@ Scripts for creating PU reweighting for CMS MC.
 
 # Setup
 * Include all the triggers you'd like to reweight in `trigger_list.txt`
-* In `run.py` check that the golden JSON and PU JSON match the data era that you want to generate the PU for. Also check the min bias xsec.
+* In `run.py` check that the golden JSON and PU JSON match the data era that you want to generate the PU for. Also check the min bias xsec and CMSSW version (newer should work even for older runs).
 * Include the MC files which you would like to reweight in mcfiles.txt. This can be a local or an xrootd path (xrootd requires grid certificates). If local files, change is_local=True in `create_weights.py`.
 
 # Running
