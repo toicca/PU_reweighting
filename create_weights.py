@@ -21,6 +21,10 @@ if not os.path.exists('rootfiles/weights'):
     os.makedirs('rootfiles/weights')
 if not os.path.exists('plots'):
     os.makedirs('plots')
+if not os.path.exists('plots/comparison'):
+    os.makedirs('plots/comparison')
+if not os.path.exists('plots/weights'):
+    os.makedirs('plots/weights')
 
 # Load the MC file paths and setup RDF
 input_files = []
@@ -64,6 +68,7 @@ for trigger in trigger_list:
     for i in range(1, dt_histo.GetNbinsX() + 1):
         dt_histo.SetBinError(i, 0)
     
+    # Scale to max=1. Somewhat legacy, but can be used to define cuts s.t. PU_count < 0.15 for example
     histo.Scale(1 / histo.GetMaximum())
     dt_histo.Scale(1 / dt_histo.GetMaximum())
     
@@ -72,7 +77,7 @@ for trigger in trigger_list:
     histo.Draw("hist")
     dt_histo.Draw("SAME")
     c.BuildLegend()
-    c.SaveAs("plots/" + trigger + "_pileup_comparison.png")
+    c.SaveAs("plots/comparison/" + trigger + "_pileup_comparison.png")
     
     # Calculate the weights
     weights = histo.Clone()
@@ -93,4 +98,10 @@ for trigger in trigger_list:
     histo.SetTitle("mc_pileup")
     histo.Write()
     weight_file.Close()
+    
+    # Plot the weights
+    c = ROOT.TCanvas("canv", "canv", 800, 600)
+    weights.GetYaxis().SetRangeUser(-1, 10) # -1 to check for mistakes and 10 to see diverging weights
+    weights.Draw()
+    c.SaveAs("plots/weights/" + trigger + "_weights.png")
     
